@@ -34,12 +34,18 @@ function FunctionBuilder()
 	this.FunctionName = "";
 	// The number of parameters for functions
 	this.ParameterCount  = 0,
+
 	// Number of if statements/loops + 1
 	this.SimpleCyclomaticComplexity = 0;
 	// The max depth of scopes (nested ifs, loops, etc)
 	this.MaxNestingDepth    = 0;
 	// The max number of conditions if one decision statement.
 	this.MaxConditions      = 0;
+
+
+
+
+	
 
 	this.report = function()
 	{
@@ -51,7 +57,7 @@ function FunctionBuilder()
 				"MaxNestingDepth: {3}\t" +
 				"MaxConditions: {4}\t" +
 				"Parameters: {5}\n\n"
-			)
+		)
 			.format(this.FunctionName, this.StartLine,
 				     this.SimpleCyclomaticComplexity, this.MaxNestingDepth,
 			        this.MaxConditions, this.ParameterCount)
@@ -118,14 +124,54 @@ function complexity(filePath)
 		if (node.type === 'FunctionDeclaration') 
 		{
 			var builder = new FunctionBuilder();
-
 			builder.FunctionName = functionName(node);
 			builder.StartLine    = node.loc.start.line;
 
+			builder.ParameterCount = node.params.length;
+			
 			builders[builder.FunctionName] = builder;
+
+		
+			
+			traverseWithParents(node, function(node){
+				if(isDecision(node)){
+					builder.SimpleCyclomaticComplexity ++;
+
+					var count = [];
+					var counter = 0;
+					traverseWithParents(node,function(node){
+						if(node.type === 'LogicalExpression'){
+							counter ++;
+						}
+					})
+
+					count.push(counter);
+
+					builder.MaxConditions = Math.max(count);
+
+					
+
+				
+
+
+				}
+				
+				
+				
+				
+			})
+
 		}
 
+		if(node.type === 'Literal'){
+			
+			fileBuilder.Strings ++;
+		}
+
+		
+
 	});
+
 
 }
 
