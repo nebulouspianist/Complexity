@@ -149,16 +149,9 @@ function complexity(filePath)
 
 					builder.MaxConditions = Math.max(count);
 
-					
-
-				
-
 
 				}
-				
-				
-				
-				
+
 			})
 
 		}
