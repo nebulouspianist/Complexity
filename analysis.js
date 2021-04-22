@@ -2,6 +2,8 @@ var esprima = require("esprima");
 var options = {tokens:true, tolerant: true, loc: true, range: true };
 var fs = require("fs");
 
+var output = 0;
+
 function main()
 {
 	var args = process.argv.slice(2);
@@ -156,11 +158,20 @@ function complexity(filePath)
 
 		}
 
+
+
+
+
+
 		if(node.type === 'Literal'){
 			
 			fileBuilder.Strings ++;
+
 		}
 
+		output = fileBuilder.Strings;
+
+		
 		
 
 	});
@@ -223,6 +234,8 @@ if (!String.prototype.format) {
 }
 
 main();
+
+
 
 function Crazy (argument) 
 {
@@ -313,5 +326,17 @@ remainder.toString() + " seconds";
           return hours.toString().split(".")[0] + " " + szhr + " " +
 mints.toString().split(".")[0] + " " + szmin;
       }
-  }
+
+	}
  exports.complexity = complexity;
+
+
+
+function getStrings(){
+	
+	return output;
+}
+
+ exports.getStrings = getStrings;
+
+
